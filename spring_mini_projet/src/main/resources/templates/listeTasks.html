@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+<head>
+	<meta charset="utf-8">
+	<title>Tasks List</title>
+</head>
+
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">
+					Tasks List
+				</div>
+				<form class="search-box" name="searchForm" th:action="@{search}" method="GET">
+									</aside>
+									<div th:if="${mode!='SearchTask'}">
+									<label class="control-label" style="margin-left: 20px;font:bold; margin-top:10px;">Search :</label>
+										<div class="form-group" style='display:flex;'>
+											
+											<input type="search" id="myInput" name='nomTask' class="form-control"
+												placeholder="Enter a Task..."
+												style='border:1px solid #7F8487;border-radius:5px;width:500px;margin-left:20px;' />
+														<th><input th:if="${mode!='SearchTask'}" class="btn btn-primary" type="submit"
+									value="Rechercher" style='margin-left:30px;'></th>
+										</div>
+										
+									</div>
+									</aside>
+
+							</td>
+							</form>
+							
+							<!--<form class="search-box" name="searchPerson" th:action="@{searchPerson}" method="GET">
+									<div class="form-group">
+										<label class="control-label">Search by Person :</label>
+										<select name="author" class="form-control" th:if="${!#strings.isEmpty(person)}" onchange="this.form.submit()" required style='border:1px solid #7F8487;border-radius:5px;'>
+											<option th:value="0" selected>-- select author --</option>
+											<option th:each="p : ${person}" th:value="${p.idP}" th:text="${p.nomP}"></option>
+										</select>
+									</div>
+							</form>-->
+								
+								
+								
+				<div class="card-body">
+					<table class="table table-striped" style="text-align: center;">
+						<tr>
+							<th>ID</th>
+							<th>Task</th>
+							<th>Person Name</th>
+							<th>Creation Date</th>
+							<th>Actions</th>
+						</tr>
+						<tr th:each="p:${tasks.content}">
+							<td th:text="${p.idTask}"></td>
+							<td th:text="${p.nomTask}"></td>
+							<td th:if="${!#strings.isEmpty(p.person)}" th:text="${p.person.nomP}"></td>
+							<td th:if="${#strings.isEmpty(p.person)}" th:text="${'there is no person !'}"></td>
+
+							<td th:text="${p.dateCreation}"></td>
+
+
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+									onclick="return confirm('Etes-vous sûr ?')" th:href="@{supprimerTask(id=${p.idTask},page=${currentPage},size=${size})}">Delete</a>
+							</td>
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-secondary"
+									th:href="@{modifierTask(id=${p.idTask})}">Update</a>
+							</td>
+						</tr>
+					</table>
+					<ul class="nav nav-pills">
+						<li th:each="page,status:${pages}">
+							<a th:class="${status.index==currentPage?'btn btn-primary':'btn' }"
+								th:href="@{ListeTasks(page=${status.index}, size=${size} ) }"
+								th:text="${status.index }"></a>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

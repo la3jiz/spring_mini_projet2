@@ -1,0 +1,48 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+<head>
+	<meta charset="utf-8">
+	<title>Tasks List</title>
+</head>
+
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">
+					Tasks List
+				</div>
+			<table class="table table-striped" style="text-align: center;">
+	<tr>
+		<th>Id</th>
+		<th>Task</th>
+		<th>creation Task</th>
+		<th>Actions</th>
+		<th></th>
+	</tr>
+	<tr th:each="t:${tasks}">
+		<td th:text="${t.idTask}"></td>
+		<td th:text="${t.nomTask}"></td>
+		<td th:text="${t.dateCreation}"></td>
+	
+		<td th:if="${!#strings.isEmpty(t.person)}" th:text="${t.person.nomP}"></td>
+		<td th:if="${#strings.isEmpty(t.person)}" th:text="no person"></td>
+
+		<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger" onclick="return confirm('Etes-vous sûr ?')"
+				th:href="@{supprimerTask(id=${t.idTask})}">delete</a>
+		</td>
+		<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-secondary" th:href="@{modifierTask(id=${t.idTask})}">update</a>
+		</td>
+	</tr>
+</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

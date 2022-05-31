@@ -1,0 +1,44 @@
+
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="template">
+<link rel="stylesheet" type="text/css" href="webjars/bootstrap/4.0.0/css/bootstrap.min.css" />
+
+<head>
+	<meta charset="utf-8">
+	<title>Persons List</title>
+</head>
+
+<body>
+	<div layout:fragment="Mycontent">
+		<div class="container mt-5">
+			<div class="card">
+				<div class="card-header">
+					Persons List
+				</div>
+			<table class="table table-striped" style="text-align: center;">
+	<tr>
+		<th>Id</th>
+		<th>Person Name</th>
+		<th>Person Status</th>
+		<th>Actions</th>
+	
+	</tr>
+	<tr th:each="p:${persons}">
+							<td th:text="${p.idP}"></td>
+							<td th:text="${p.nomP}"></td>
+							<td th:text="${p.descriptionP}"></td>
+							<td>
+							<td sec:authorize="hasRole('ADMIN')"><a class="btn btn-danger"
+									onclick="return confirm('Etes-vous sur ?')"
+									th:href="@{supprimerPerson(id=${p.idP})}">Delete</a> &nbsp;
+								<a class="btn btn-secondary" th:href="@{modifierPerson(id=${p.idP})}">Update</a>
+						</tr>
+</table>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
